@@ -36,7 +36,9 @@ int main()
         lexer(line);//call the lexer function
     
     }
-    cout <<endl;
+    
+
+
     inputFile.close();
     return 0;
 }
@@ -68,7 +70,7 @@ bool isKeyword(char buffer[])
 
 }
 //converting character array to string for printing
-string convertToString(char*ch, int size)
+string convertToString(char ch[], int size)
 {
     string str = "";
     for(int d = 0; d < size; d++)
@@ -97,7 +99,7 @@ void lexer(string line)
 
     //tokenizing the string below
     cout << "...Testing tokenization of the string..."<<endl;
-    cout <<setw(10)<<"Output: "<<endl;
+    cout <<setw(18)<<"Output: "<<endl;
     cout <<"token "<<setw(20)<<"lexeme"<<endl;
 
     char buffer[15];//this will be inputed into keyWords function
@@ -122,39 +124,34 @@ void lexer(string line)
             cout << "operator"<<setw(15)<<chArray[b]<<endl;
 
         }
-
-        //checks seperator
-        if(chArray[b]== '['||chArray[b]== ']'||chArray[b]== '('||chArray[b]== ')'||
+        else if(chArray[b]== '['||chArray[b]== ']'||chArray[b]== '('||chArray[b]== ')'||
         chArray[b]== '{'||chArray[b]== '}'||chArray[b]== '[')
-        {
+        {//checks seperator
             cout <<"seperator"<<setw(15)<< chArray[b]<<endl;
 
         }
-
-        //keywords and identifier
+        
         if(isalnum(chArray[b])) // this checks if char is alphanumeric
-        {
-            buffer[position++];
+        {//keywords and identifier
+            buffer[position++]=chArray[b];
         }
         else if((chArray[b] == ' '||chArray[b]=='\n')&&(position !=0))
         {//I took this from the internet to help break this apart
-            //buffer[position]= '\0';
-            //position = 0; 
+            buffer[position]= '\0';
+            position = 0; 
             //both of these will reset the buffer and positon to zero
             //that way the program can continue to run the checking states.
 
             bufferSize = sizeof(buffer);
             word = convertToString(buffer,bufferSize);
             //once if condition is met, check the things inside buffer and compare
-            if(isKeyword(buffer))
-            {//if true
-                
-                cout << "keyword"<<setw(15)<<word<<endl;;
-                
+            if(isKeyword(buffer)==true)
+            {//if true  
+                cout << "keyword              "<<word<<endl;  
             }
             else
             {
-                cout <<"identifier"<<setw(15)<<word<<endl;;
+                cout <<"identifier            "<<word<<endl;
             }
             
 
