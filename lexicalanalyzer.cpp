@@ -11,11 +11,11 @@
 using namespace std;
 
 bool isKeyword(char buffer[]);
+string convertToString(char ch[], int size);
 void lexer(string line); //this checks EACH lexeme and returns a token
 
 int main()
 {
-
     ifstream inputFile;
     inputFile.open("test1.txt");
     
@@ -27,23 +27,17 @@ int main()
     }
 
     while(!inputFile.eof())
-    {
-        
+    {  
         //vector<string> lineVector;
         string line;
         getline(inputFile,line);
         cout << "...Testing getLine..."<<endl;
-        cout << line << endl;
-
-        lexer(line);
-
-        
+        cout << line << endl;//here i am inputing a whole string into the function
+        lexer(line);//call the lexer function
+    
     }
-
-   
-
+    cout <<endl;
     inputFile.close();
-
     return 0;
 }
 
@@ -73,6 +67,16 @@ bool isKeyword(char buffer[])
     return indicator;
 
 }
+//converting character array to string for printing
+string convertToString(char*ch, int size)
+{
+    string str = "";
+    for(int d = 0; d < size; d++)
+    {
+        str = str + ch[d];
+    }
+    return str;
+}
 void lexer(string line)
 {
     //this will do all the testing and tokening
@@ -93,35 +97,70 @@ void lexer(string line)
 
     //tokenizing the string below
     cout << "...Testing tokenization of the string..."<<endl;
-    char buffer[15];//this will be inputed into keyWords function
+    cout <<setw(10)<<"Output: "<<endl;
+    cout <<"token "<<setw(20)<<"lexeme"<<endl;
 
+    char buffer[15];//this will be inputed into keyWords function
+    int position = 0;//this is the position in the buffer char array
+    int bufferSize;
+    string word;
 
     /*
         This could be an implementation of Finite State Machine
         Initial State is at the source code input
         Reads each character and catagorize them
         Once done goes to the next state and repeats the process until no more inputs
-        Final State will be reached
+        Final State will be reached at output
 
     */    
     for (int b=0; b < length;b++)
     {
-
+        //checks operator
         if(chArray[b]== '+'||chArray[b]== '-'||chArray[b]== '*'||chArray[b]== '/'||
-        chArray[b]== '%'||chArray[b]== '='||chArray[b]== '<'||chArray[b]== '>')//check operator
+        chArray[b]== '%'||chArray[b]== '='||chArray[b]== '<'||chArray[b]== '>')
         {
             cout << "operator"<<setw(15)<<chArray[b]<<endl;
 
         }
 
+        //checks seperator
         if(chArray[b]== '['||chArray[b]== ']'||chArray[b]== '('||chArray[b]== ')'||
         chArray[b]== '{'||chArray[b]== '}'||chArray[b]== '[')
         {
-
+            cout <<"seperator"<<setw(15)<< chArray[b]<<endl;
 
         }
 
+        //keywords and identifier
+        if(isalnum(chArray[b])) // this checks if char is alphanumeric
+        {
+            buffer[position++];
+        }
+        else if((chArray[b] == ' '||chArray[b]=='\n')&&(position !=0))
+        {//I took this from the internet to help break this apart
+            //buffer[position]= '\0';
+            //position = 0; 
+            //both of these will reset the buffer and positon to zero
+            //that way the program can continue to run the checking states.
 
+            bufferSize = sizeof(buffer);
+            word = convertToString(buffer,bufferSize);
+            //once if condition is met, check the things inside buffer and compare
+            if(isKeyword(buffer))
+            {//if true
+                
+                cout << "keyword"<<setw(15)<<word<<endl;;
+                
+            }
+            else
+            {
+                cout <<"identifier"<<setw(15)<<word<<endl;;
+            }
+            
+
+        }
+
+//*/
 
 
 
