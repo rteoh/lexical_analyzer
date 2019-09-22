@@ -1,3 +1,9 @@
+/*
+Jimmy PHong
+Ryan Teoh
+Assignment 1 Lexical Analyzer
+*/
+
 #include <bits/stdc++.h>
 #include <ctype.h>
 #include <iomanip>
@@ -40,6 +46,8 @@ int main()
 
 
     inputFile.close();
+    cout << "...Testing Complete..." <<endl;
+    cout<<"...Terminating Program..."<<endl;
     return 0;
 }
 
@@ -97,10 +105,14 @@ void lexer(string line)
         cout << chArray[a] << " ";
     }
 
-    //tokenizing the string below
+
+
+    //tokenizing the string below AND print out to file.
+    ofstream outFile;
+    outFile.open("output.txt");
     cout << "...Testing tokenization of the string..."<<endl;
-    cout <<setw(18)<<"Output: "<<endl;
-    cout <<"token "<<setw(20)<<"lexeme"<<endl;
+    outFile <<setw(18)<<"Output: "<<endl;
+    outFile <<"token "<<setw(20)<<"lexeme"<<endl;
 
     char buffer[15];//this will be inputed into keyWords function
     int position = 0;//this is the position in the buffer char array
@@ -115,19 +127,21 @@ void lexer(string line)
         Final State will be reached at output
 
     */    
+    
+
     for (int b=0; b < length;b++)
     {
         //checks operator
         if(chArray[b]== '+'||chArray[b]== '-'||chArray[b]== '*'||chArray[b]== '/'||
         chArray[b]== '%'||chArray[b]== '='||chArray[b]== '<'||chArray[b]== '>')
         {
-            cout << "operator"<<setw(15)<<chArray[b]<<endl;
+            outFile << "operator"<<setw(15)<<chArray[b]<<endl;
 
         }
         else if(chArray[b]== '['||chArray[b]== ']'||chArray[b]== '('||chArray[b]== ')'||
         chArray[b]== '{'||chArray[b]== '}'||chArray[b]== '[')
         {//checks seperator
-            cout <<"seperator"<<setw(15)<< chArray[b]<<endl;
+            outFile <<"seperator"<<setw(15)<< chArray[b]<<endl;
 
         }
         
@@ -147,21 +161,20 @@ void lexer(string line)
             //once if condition is met, check the things inside buffer and compare
             if(isKeyword(buffer)==true)
             {//if true  
-                cout << "keyword              "<<word<<endl;  
+                outFile << "keyword              "<<word<<endl;  
             }
             else
             {
-                cout <<"identifier            "<<word<<endl;
+                outFile <<"identifier            "<<word<<endl;
             }
-            
-
+            /*
+                MAJOR PROBLEM HERE; IDENTIFIERS DONT PRINT
+            */
         }
-
-//*/
 
 
 
     }
-
+    outFile.close();
 
 }
