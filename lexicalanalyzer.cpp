@@ -2,9 +2,23 @@
 Jimmy Phong
 Ryan Teoh
 Assignment 1 Lexical Analyzer 
-USE STATE VARIABLE
-2 DIM ARRAY
-LOOP CHP 2 PG.13
+*/
+
+
+//////////////////////////
+//         TODO:        //
+//////////////////////////
+
+/*
+1. USE STATE VARIABLE
+2. Create 2 DIM ARRAY
+(Use LOOP from CHP 2 PG.13 powerpoint for referance)
+3. Implement DFSM into project
+4. Fix identifier
+(see if the 'word' variable matches any of the know keywords, if it does not, it is an identifier)
+5. Show dollar signs in identifier
+(remove isalnum and use else statement for both identifier and keywords)
+(achieve this by listing out all keywords in c++ by using if-else statement)
 */
 
 
@@ -69,7 +83,7 @@ int main()
     isKeyword function will return true or false if the input buffer is a keyword
 */
 bool isKeyword(char buffer[])
-{//took this from the internet to compare the characters
+{
     char keywords[32][10]= {"auto","break","case","char","const","continue","default",
 							"do","double","else","enum","extern","float","for","goto",
 							"if","int","long","register","return","short","signed",
@@ -136,7 +150,17 @@ void lexer(string line)
         Once done goes to the next state and repeats the process until no more inputs
         Final State will be reached at output
 
-    */    
+    */  
+
+
+    // Check to see if line starts with a valid character
+    if(chArray[0] == '!') {
+    //if( !isalnum(chArray[0]) || (chArray[0] != '{') || (chArray[0] != '}') || (chArray[0] != '#') || (chArray[0] != '/')  || (chArray[0] != '*')) {
+
+        // If line does not with alpha-numeric or with certain characters, the line will be ignored.
+        return;
+
+    } 
     
 
     for (int b=0; b < length;b++)
@@ -145,45 +169,83 @@ void lexer(string line)
         if(chArray[b]== '+'||chArray[b]== '-'||chArray[b]== '*'||chArray[b]== '/'||
         chArray[b]== '%'||chArray[b]== '='||chArray[b]== '<'||chArray[b]== '>')
         {
+
+            // If previous keyword/identifiers did not get called before operator
+            if(position != 0) {
+
+                // Convert char to string
+                bufferSize = sizeof(buffer);
+                word = convertToString(buffer,bufferSize);
+
+                outFile << "KEYWORD          =         " << word <<endl;  
+
+                // Resets Buffer
+                while(position != 0) {
+                    buffer[position]= '\0';
+                    position--;
+                }
+
+            }
+
             outFile << "OPERATOR         =" << setw(10) << chArray[b]<<endl;
+
 
         }
         else if(chArray[b]== '['||chArray[b]== ']'||chArray[b]== '('||chArray[b]== ')'||
         chArray[b]== '{'||chArray[b]== '}'||chArray[b]== '['||chArray[b]== ','||chArray[b]== ';')
-        {//checks seperator
+        {
+
+            // If previous keyword/identifiers did not get called before operator
+            if(position != 0) {
+
+                // Convert char to string
+                bufferSize = sizeof(buffer);
+                word = convertToString(buffer,bufferSize);
+
+                outFile << "KEYWORD          =         " << word <<endl;  
+
+                // Resets Buffer
+                while(position != 0) {
+                    buffer[position]= '\0';
+                    position--;
+                }
+
+            }
+
             outFile <<"SEPERATOR        =" << setw(10) << chArray[b]<<endl;
 
-        }
-        
-        if(isalnum(chArray[b])) // this checks if char is alphanumeric
-        {//keywords and identifier
-            buffer[position++]=chArray[b];
-        }
-        else if((chArray[b] == ' '||chArray[b]=='\n')&&(position !=0))
-        {//I took this from the internet to help break this apart
-            buffer[position]= '\0';
-            position = 0; 
-            //both of these will reset the buffer and positon to zero
-            //that way the program can continue to run the checking states.
 
+        // If char is not space or new line, add char to buffer
+        } else if(isalnum(chArray[b])) {
+
+            buffer[position++]=chArray[b];
+
+        } else if((chArray[b] == ' '||chArray[b]=='\n') && (position !=0)) { 
+
+            // Convert char to string
             bufferSize = sizeof(buffer);
             word = convertToString(buffer,bufferSize);
+
+
+
             //once if condition is met, check the things inside buffer and compare
             if(isKeyword(buffer) == true) {
-            //if((word == "if") || (word == "else") || (word == "while") || (word == "do") ||  (word == "break") ||  (word == "continue") || (word == "switch") || (word == "unsigned") || (word == "void") || (word == "static") || (word == "struct") || (word == "int") || (word == "double") || (word == "float") || (word == "return") || (word == "char") || (word == "case") || (word == "char") || (word == "sizeof") || (word == "long") || (word == "short") || (word == "typedef") || (word == "goto")) {
+
                 outFile << "KEYWORD          =         " << word <<endl;  
-            }
-            else
-            {
+
+            } else {
+
                 outFile << "IDENTIFIERS      =         " << word <<endl;
+
             }
-            /*
-                MAJOR PROBLEM HERE; IDENTIFIERS DONT PRINT
-            */
+
+            // Resets Buffer
+            while(position != 0) {
+                buffer[position]= '\0';
+                position--;
+            }
 
         }
-
-
 
     }
     outFile.close();
