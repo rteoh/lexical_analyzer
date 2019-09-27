@@ -1,11 +1,13 @@
 /*
-Jimmy PHong
+Jimmy Phong
 Ryan Teoh
-Assignment 1 Lexical Analyzer
+Assignment 1 Lexical Analyzer 
+USE STATE VARIABLE
+2 DIM ARRAY
+LOOP CHP 2 PG.13
 */
 
-#include <bits/stdc++.h>
-#include <ctype.h>
+
 #include <iomanip>
 #include <iostream>
 #include <fstream>
@@ -22,8 +24,11 @@ void lexer(string line); //this checks EACH lexeme and returns a token
 
 int main()
 {
+
+    // Open Input file
     ifstream inputFile;
     inputFile.open("test1.txt");
+
     
     //file error check
     if(!inputFile.is_open())
@@ -32,15 +37,23 @@ int main()
         exit(0);
     }
 
+
+    // Create Header of Output File
+    ofstream outFile;
+    outFile.open("output.txt");
+    outFile <<setw(22)<<"Output: "<<endl;
+    outFile <<"TOKENS "<<setw(27)<<"Lexemes"<<endl << endl;
+    outFile.close();
+
+
     while(!inputFile.eof())
     {  
-        //vector<string> lineVector;
+        vector<string> lineVector;
         string line;
         getline(inputFile,line);
         cout << "...Testing getLine..."<<endl;
         cout << line << endl;//here i am inputing a whole string into the function
         lexer(line);//call the lexer function
-    
     }
     
 
@@ -109,10 +122,7 @@ void lexer(string line)
 
     //tokenizing the string below AND print out to file.
     ofstream outFile;
-    outFile.open("output.txt");
-    cout << "...Testing tokenization of the string..."<<endl;
-    outFile <<setw(18)<<"Output: "<<endl;
-    outFile <<"token "<<setw(20)<<"lexeme"<<endl;
+    outFile.open("output.txt", ios::app);
 
     char buffer[15];//this will be inputed into keyWords function
     int position = 0;//this is the position in the buffer char array
@@ -135,13 +145,13 @@ void lexer(string line)
         if(chArray[b]== '+'||chArray[b]== '-'||chArray[b]== '*'||chArray[b]== '/'||
         chArray[b]== '%'||chArray[b]== '='||chArray[b]== '<'||chArray[b]== '>')
         {
-            outFile << "operator"<<setw(15)<<chArray[b]<<endl;
+            outFile << "OPERATOR         =" << setw(10) << chArray[b]<<endl;
 
         }
         else if(chArray[b]== '['||chArray[b]== ']'||chArray[b]== '('||chArray[b]== ')'||
-        chArray[b]== '{'||chArray[b]== '}'||chArray[b]== '[')
+        chArray[b]== '{'||chArray[b]== '}'||chArray[b]== '['||chArray[b]== ','||chArray[b]== ';')
         {//checks seperator
-            outFile <<"seperator"<<setw(15)<< chArray[b]<<endl;
+            outFile <<"SEPERATOR        =" << setw(10) << chArray[b]<<endl;
 
         }
         
@@ -159,17 +169,18 @@ void lexer(string line)
             bufferSize = sizeof(buffer);
             word = convertToString(buffer,bufferSize);
             //once if condition is met, check the things inside buffer and compare
-            if(isKeyword(buffer)==true)
-            {//if true  
-                outFile << "keyword              "<<word<<endl;  
+            if(isKeyword(buffer) == true) {
+            //if((word == "if") || (word == "else") || (word == "while") || (word == "do") ||  (word == "break") ||  (word == "continue") || (word == "switch") || (word == "unsigned") || (word == "void") || (word == "static") || (word == "struct") || (word == "int") || (word == "double") || (word == "float") || (word == "return") || (word == "char") || (word == "case") || (word == "char") || (word == "sizeof") || (word == "long") || (word == "short") || (word == "typedef") || (word == "goto")) {
+                outFile << "KEYWORD          =         " << word <<endl;  
             }
             else
             {
-                outFile <<"identifier            "<<word<<endl;
+                outFile << "IDENTIFIERS      =         " << word <<endl;
             }
             /*
                 MAJOR PROBLEM HERE; IDENTIFIERS DONT PRINT
             */
+
         }
 
 
