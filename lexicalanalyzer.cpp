@@ -92,15 +92,15 @@ bool isKeyword(vector<char> buffer)
 	string str(buffer.begin(), buffer.end());
 	cout <<"Buffer in String Form: " <<str << endl;
 	
-	string keywords[36] = { "auto","bool","break","case","char","const","continue","default",
-							"do","double","else","enum","extern","false","float","for","goto",
-							"if","int","long","register","return","short","signed",
-							"sizeof","static","string","struct","switch","true","typedef","union",
-							"unsigned","void","volatile","while" };
+	string keywords[45] = { "and","auto","bool","break","case","char","const","continue","default",
+							"do","double","else","endif","enum","extern","false","float","for","forend","function","goto",
+							"if","input","int","long","output","or","register","return","short","signed",
+							"sizeof","static","string","struct","switch","then","true","typedef","union",
+							"unsigned","void","volatile","while","whileend" };
 	
 	//check if the word in the buffer is a keyword
 	bool indicator = false; // this is the initial response 
-	for (int c = 0; c < 33; c++)
+	for (int c = 0; c < 45; c++)
 	{
 		if (str == keywords[c])
 		{
@@ -142,7 +142,7 @@ void lexer(vector<char>chVector,vector<char>buffer)
 		return;
 
 	}
-
+	
 	string wordInBuffer;
 	//This goes through chVector and adds into buffer if needed
 	for (int b = 0; b < chVector.size(); b++)
@@ -151,12 +151,14 @@ void lexer(vector<char>chVector,vector<char>buffer)
 		if (chVector[b] == '+' || chVector[b] == '-' || chVector[b] == '*' || chVector[b] == '/' ||
 			chVector[b] == '%' || chVector[b] == '=' || chVector[b] == '<' || chVector[b] == '>')
 		{
-			//TOOK OUT wordInBuffer here, not relevant
 			outFile << "OPERATOR         =" << setw(10) << chVector[b] << endl;
 
-		}
+
+
+		}//checks seperator
 		else if (chVector[b] == '[' || chVector[b] == ']' || chVector[b] == '(' || chVector[b] == ')' ||
-			chVector[b] == '{' || chVector[b] == '}' || chVector[b] == '[' || chVector[b] == ',' || chVector[b] == ';')
+			chVector[b] == '{' || chVector[b] == '}' || chVector[b] == '[' || chVector[b] == '.' ||
+			chVector[b] == ',' || chVector[b] == ';' || chVector[b] == ':' || chVector[b] == '!')
 		{
 			// If previous keyword/identifiers did not get called before operator
 			if (!buffer.empty())
@@ -182,13 +184,10 @@ void lexer(vector<char>chVector,vector<char>buffer)
 				cout << buffer[p];
 			}
 			cout << endl;
+
 			
 		}
 		else if ((chVector[b] == ' ' || chVector[b] == '\n') && (!buffer.empty())) {
-
-			//// Convert char to string
-			//bufferSize = sizeof(buffer);
-			//word = convertToString(buffer, bufferSize);
 
 			string wordInBuffer(buffer.begin(), buffer.end());
 			cout << "Current Word: " << wordInBuffer << endl;
