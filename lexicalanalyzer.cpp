@@ -34,8 +34,6 @@ using namespace std;
 
 bool isKeyword(vector<char>buffer);
 void lexer(vector<char>chVector, vector<char>buffer); //this checks EACH lexeme 
-//void operator(vector<char>buffer);
-//void seperator(vector<char>buffer);
 
 int main()
 {
@@ -116,17 +114,6 @@ bool isKeyword(vector<char> buffer)
 	return indicator;
 
 }
-
-//void operator(vector<char>buffer)
-//{
-//	
-//}
-//void seperator(vector<char> buffer)
-//{
-//
-//
-//}
-//
 
 void lexer(vector<char>chVector,vector<char>buffer)
 {
