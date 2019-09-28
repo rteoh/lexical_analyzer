@@ -92,10 +92,10 @@ bool isKeyword(vector<char> buffer)
 	string str(buffer.begin(), buffer.end());
 	cout <<"Buffer in String Form: " <<str << endl;
 	
-	string keywords[33] = { "auto","bool","break","case","char","const","continue","default",
-							"do","double","else","enum","extern","float","for","goto",
+	string keywords[36] = { "auto","bool","break","case","char","const","continue","default",
+							"do","double","else","enum","extern","false","float","for","goto",
 							"if","int","long","register","return","short","signed",
-							"sizeof","static","struct","switch","typedef","union",
+							"sizeof","static","string","struct","switch","true","typedef","union",
 							"unsigned","void","volatile","while" };
 	
 	//check if the word in the buffer is a keyword
